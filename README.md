@@ -58,5 +58,11 @@ Both Client and Server are built using the following stack:
 }
 ```
 
-Material UI is an excellent way to write CSS, making the code look cleaner and promoting code reusability. Since Next.js isn't used for routing, react-router-dom is chosen, utilizing BrowserRouter, Routes, Route, etc. Express serves as the backend server, while MongoDB with Mongoose is used for the database. Robo3T (Studio3T) is used for better database visualization. Axios simplifies HTTP requests.
 
+Material UI is an amazing way to write css making the code look a lot cleaner and enhances code resusability    
+Since we arent using NextJs which takes care of routing through directory arrangement we are opting for react-router-dom and will be using
+browserRouter , Routes , Route etc to fill that void along with useNavigation   
+Express and brothers acts as our backend server while our database is mongodb run on its mongoose framework  
+I did Use robo3T / Studio3T as its call now , for better visualization of whats lying in the back (database)  
+Axios reduces the codelines and makes the coding part easier and more understandable and is said to be more capable as well  
+So i have given a small brief about the project stack idea   
