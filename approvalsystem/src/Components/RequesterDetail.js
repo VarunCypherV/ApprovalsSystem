@@ -51,7 +51,7 @@ const RequestOrderDetail = (props) => {
 
   const fetchData = async () => {
     try {
-      console.log(`http://localhost:5000/reqs/${requestorid}`);
+     
       const response = await axios.get(`http://localhost:5000/reqs/${requestorid}`);
       setRequestDetails(response.data);
       setError(null);

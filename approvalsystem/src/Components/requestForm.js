@@ -107,7 +107,7 @@ const RequestForm = (props) => {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
   
-  console.log(selectedWorkflowId,selectedWorkflowName,description,attachments);
+
   const handleSubmit = event => {
     event.preventDefault();
 
