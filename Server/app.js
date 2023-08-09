@@ -229,27 +229,28 @@ app.route("/workflows")
           res.status(500).json({ error: 'Error fetching data' });
         }
       });
-   
-      app.put('/reqs/:reqid',async function (req, res) {
+      app.patch('/reqs/:reqid', async function (req, res) {
         try {
-            const reqId = parseInt(req.params.reqid);
+            const reqId = parseInt(req.params.reqid); // Parse as MongoDB NumberInt
+            console.log('reqId:', reqId);
             const newStatus = req.query.newStatus;
-
-            await Login.updateOne(
-                { userId: reqId},
-                { $set: { status: newStatus} },
-                { overwrite: true } 
+            console.log('newStatus:', newStatus);
+            const updateResult = await Reqs.updateOne(
+                { reqid: reqId },
+                { $set: { status: newStatus } },
+                { overwrite: true }
             );
-
+            console.log('updateResult:', updateResult);
             res.json({ message: "Login updated successfully" });
         } catch (err) {
             console.error(err);
             res.status(500).json({ error: "Internal Server Error" });
         }
-    })
+    });
+    
+    
+    
          
-
-
 
 app.listen(5000,function(){
     console.log('server started on port 5000');

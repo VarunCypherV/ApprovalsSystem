@@ -44,11 +44,11 @@ const ApproverDashboard = (props) => {
       }
     };
     fetchData();
-  }, [userId]);
+  }, [userId,filteredRequests]);
 
   const handleStatusUpdate = async (reqid, newStatus) => {
     try {
-      await axios.put(
+      await axios.patch(
         `http://localhost:5000/reqs/${reqid}?newStatus=${newStatus}`
       );
       const updatedRequests = filteredRequests.map((req) => {
