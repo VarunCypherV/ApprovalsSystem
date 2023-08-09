@@ -2,7 +2,7 @@
 A Both Client and Server build using the following stack
 
 MERN + AXIOS RESTFUL API
-
+------------------------
 Node Modules : npm i
 Material UI : npm install @mui/material @emotion/react @emotion/styled styled-components
 React-Router-Dom npm install react-router-dom
@@ -14,6 +14,8 @@ Run npm start to fire up our website and nodemon app.js to fire up the server in
 Note : The Server runs in localhost 5000 and the website runs in localhost 3000
 
 Backend Collection Example (one of each collection) : 
+---------------------
+
 reqs : to handle requests 
 {
     "_id" : ObjectId("64d23e9d12b4bebdc7a2dece"),
@@ -46,6 +48,8 @@ workflows : To handle workfows
     ],
     "__v" : NumberInt(0)
 }
+
+-----------------------
 
 Material UI is an amazing way to write css making the code look a lot cleaner and helps code resusability 
 Since we arent using NextJs which takes care of routing through directory arrangement we are opting for react-router-dom and will be using
