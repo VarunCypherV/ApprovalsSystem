@@ -230,6 +230,23 @@ app.route("/workflows")
         }
       });
    
+      app.put('/reqs/:reqid',async function (req, res) {
+        try {
+            const reqId = parseInt(req.params.reqid);
+            const newStatus = req.query.newStatus;
+
+            await Login.updateOne(
+                { userId: reqId},
+                { $set: { status: newStatus} },
+                { overwrite: true } 
+            );
+
+            res.json({ message: "Login updated successfully" });
+        } catch (err) {
+            console.error(err);
+            res.status(500).json({ error: "Internal Server Error" });
+        }
+    })
          
 
 
