@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { TextField, FormControlLabel, Button } from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
 import styled from "styled-components";
@@ -62,25 +62,28 @@ const LoginScreen = () => {
   const handleRoleChange = (event) => {
     setSelectedRole(event.target.value);
   };
-
+  
+  
   const handleSubmit = async () => {
     // Here you can send the selected role, user ID, and password to the backend
     try {
-      console.log("Selected Role:", role);
-      console.log("User ID:", userId);
-      console.log("Password:", password);
       const response = await axios.get(
         `http://localhost:5000/logins/${userId}/${password}/${role}`
       );
       //console.log(response);
       if (response.status === 200 && response.data != null) {
+        
         const data = response.data;
         console.log("Login successful:", data);
+        sessionStorage.setItem("userId", data.userId);
         if (data.role === "adminstrator") {
+
           navigate("/admin");
         } else if (data.role === "requester") {
+
           navigate("/request");
         } else if (data.role === "approver") {
+
           navigate("/approve");
         }
       } else {

@@ -1,36 +1,74 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Container, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
-const RequestOrderDetail = () => {
-  const [requestDetails, setRequestDetails] = useState({});
-  const reqid=999;
+
+const RequestOrderDetail = (props) => {
+  const [requestDetails, setRequestDetails] = useState([]);
+  const [error, setError] = useState(null);
+  const requestorid = props.requestoridz;
+
+  const fields = [
+    'reqid',
+    'workflowId',
+    'requestorid',
+    'timestamp',
+    'NoOfApprovals',
+    'status'
+  ];
+
+  const fetchData = async () => {
+    try {
+      console.log(`http://localhost:5000/reqs/${requestorid}`);
+      const response = await axios.get(`http://localhost:5000/reqs/${requestorid}`);
+      setRequestDetails(response.data);
+      setError(null);
+    } catch (error) {
+      console.error('Error fetching request details:', error);
+      setError(error);
+    }
+  };
+
   useEffect(() => {
-    // Fetch request details based on the user's login ID (userLoginId) from the provided API endpoint
-    axios.get(`http://localhost:5000/reqs/${reqid}`) // Use user's login ID as reqid
-      .then(response => {
-        setRequestDetails(response.data);
-      })
-      .catch(error => {
-        console.error('Error fetching request details:', error);
-      });
-  }, [reqid]);
+    if (requestorid) {
+      fetchData();
+    }
+  }, [requestorid]);
+
+  if (error) {
+    return (
+      <Container maxWidth="lg">
+        <Typography variant="h4">Error Fetching Request Details</Typography>
+        <Typography color="error">{error.message}</Typography>
+      </Container>
+    );
+  }
+
+  if (requestDetails.length === 0) {
+    return (
+      <Container maxWidth="lg">
+        <Typography variant="h4">Loading...</Typography>
+      </Container>
+    );
+  }
 
   return (
     <Container maxWidth="lg">
-      <Typography variant="h4">Request Details for Request ID {reqid}</Typography>
+      <Typography variant="h4">Request Details for Requestor ID {requestorid}</Typography>
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>Field</TableCell>
-              <TableCell>Value</TableCell>
+              {fields.map(field => (
+                <TableCell key={field}>{field}</TableCell>
+              ))}
             </TableRow>
           </TableHead>
           <TableBody>
-            {Object.keys(requestDetails).map(field => (
-              <TableRow key={field}>
-                <TableCell>{field}</TableCell>
-                <TableCell>{field === 'timestamp' ? new Date(requestDetails[field]).toLocaleString() : requestDetails[field]}</TableCell>
+            {requestDetails.map((request, index) => (
+              <TableRow key={index}>
+                {fields.map(field => (
+                  <TableCell key={field}>{request[field]}</TableCell>
+                ))}
               </TableRow>
             ))}
           </TableBody>

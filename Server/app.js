@@ -210,11 +210,21 @@ app.route("/workflows")
         }
       });
 
-      app.get('/reqs/:reqid', async (req, res) => {
+    //   app.get('/reqs/:reqid', async (req, res) => {
+    //     try {
+    //     const reqid=req.params.reqid;
+    //       const reqssData = await Reqs.findOne({reqid:reqid}); // Fetch all documents from the collection
+    //       res.json(reqssData);
+    //     } catch (error) {
+    //       res.status(500).json({ error: 'Error fetching data' });
+    //     }
+    //   });
+
+      app.get('/reqs/:requesterid', async (req, res) => {
         try {
-        const reqid=req.params.reqid;
-          const reqssData = await Reqs.findOne({reqid:reqid}); // Fetch all documents from the collection
-          res.json(reqssData);
+        const requestorid=parseInt(req.params.requesterid);
+          const reqsData = await Reqs.find({requestorid:requestorid}); // Fetch all documents from the collection
+          res.json(reqsData);
         } catch (error) {
           res.status(500).json({ error: 'Error fetching data' });
         }

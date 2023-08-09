@@ -42,7 +42,7 @@ const RequestForm = () => {
     formData.append('attachments', attachments);
 
     // Make POST request to save form data
-    axios.post('http://localhost:5000/reqss', formData)
+    axios.post('http://localhost:5000/reqs', formData)
       .then(response => {
         console.log('Request submitted successfully:', response.data);
         // Reset form fields

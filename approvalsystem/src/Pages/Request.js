@@ -3,12 +3,13 @@ import RequestForm from '../Components/requestForm';
 import RequestOrderDetail from '../Components/RequesterDetail';
 
 
-function Request() {
-
+const Request = ()=> {
+ let requestorid = sessionStorage.getItem("userId"); // Use a consistent key
   return (
     <div>
         <RequestForm/>
-        <RequestOrderDetail/>
+   
+        <RequestOrderDetail requestoridz={requestorid}/>
     </div>
   );
 }
