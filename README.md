@@ -9,7 +9,8 @@ Both Client and Server are built using the following stack:
 - Express-Mongoose-BodyParser and Axios: `npm install express mongoose body-parser ejs axios`
 - Nodemailer (email notifications): `npm install nodemailer`
 
-**Execution
+
+###Execution
 -Spin up two terminals and `cd` into `approvalsystem` in one and `server` in another.
 -Run `npm start` to launch the website and `nodemon app.js` to start the server in their respective terminals.
 -Note: The Server runs on localhost:5000, and the website runs on localhost:3000.
