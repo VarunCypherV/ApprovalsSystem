@@ -1,15 +1,33 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Container, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
+import styled from 'styled-components';
+import { useNavigate } from "react-router-dom";
 
+const ReddishWhiteTable = styled(Table)`
+  background-color: #ff9999; 
+`;
+const StyledButton = styled.button`
+   background-color: red;
+   color: white;
+   border: none;
+   padding: 10px 20px;
+   border-radius: 5px;
+   cursor: pointer;
+   margin-top: 20px;
+   font-size: 16px;
+   margin-bottom: 10%;
+`;
 const Audit = () => {
+  const navigate = useNavigate();
+  const handleGoToAdmin = () => {
+    navigate("/admin"); 
+  };
   const [auditData, setAuditData] = useState([]);
 
   useEffect(() => {
-    // Fetch audit data from the provided API endpoint
-    axios.get('http://localhost:5000/reqs') // Change the URL to your API endpoint
+    axios.get('http://localhost:5000/reqs')
       .then(response => {
-        // Filter the audit data to include only "Approved" or "Rejected" status
         const filteredAuditData = response.data.filter(audit => audit.status === "Approved" || audit.status === "Rejected");
         setAuditData(filteredAuditData);
       })
@@ -22,7 +40,7 @@ const Audit = () => {
     <Container maxWidth="lg">
       <h2>Audit Page</h2>
       <TableContainer component={Paper}>
-        <Table>
+        <ReddishWhiteTable>
           <TableHead>
             <TableRow>
               <TableCell>Request ID</TableCell>
@@ -43,8 +61,9 @@ const Audit = () => {
               </TableRow>
             ))}
           </TableBody>
-        </Table>
+        </ReddishWhiteTable>
       </TableContainer>
+      <StyledButton onClick={handleGoToAdmin}>Admin</StyledButton>
     </Container>
   );
 };

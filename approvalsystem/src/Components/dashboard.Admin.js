@@ -1,5 +1,34 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { Box } from '@mui/material';
+import styled from 'styled-components';
+
+const DashboardContainer = styled(Box)`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1px solid pink;
+  box-shadow: 2px 2px 2px 2px rgba(0.2, 0.2, 0.2, 0.2);;
+  padding: 20px;
+  background: white;
+  max-width: 30%;
+  margin: 0 auto;
+  margin-top: 50px;
+  margin-bottom:50px;
+
+  & > div {
+    margin-bottom: 20px;
+
+    h3 {
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+
+    p {
+      font-size: 16px;
+    }
+  }
+`;
 
 const DashboardAdmin = () => {
   const [pendingWorkflows, setPendingWorkflows] = useState(0);
@@ -65,7 +94,7 @@ const DashboardAdmin = () => {
   };
 
   return (
-    <div>
+    <DashboardContainer>
       <h2>Admin Dashboard</h2>
       <div>
         <h3>Total Number of Pending Workflows: {pendingWorkflows}</h3>
@@ -82,7 +111,7 @@ const DashboardAdmin = () => {
         <p>This Week: {rejectedThisWeek}</p>
         <p>Today: {rejectedToday}</p>
       </div>
-    </div>
+    </DashboardContainer>
   );
 };
 

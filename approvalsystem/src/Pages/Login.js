@@ -15,7 +15,7 @@ const Container = styled.div`
   background: linear-gradient(to right, #c62828, #8e0000, #8e0000, #c62828);
 `;
 const Title = styled.h1`
-  font-family: "Cursive"; /* Specify your custom font or font family here */
+  font-family: "Cursive";
   font-size: 2.5rem;
   color: #fff;
   margin-bottom: 20px;
@@ -65,12 +65,10 @@ const LoginScreen = () => {
   
   
   const handleSubmit = async () => {
-    // Here you can send the selected role, user ID, and password to the backend
     try {
       const response = await axios.get(
         `http://localhost:5000/logins/${userId}/${password}/${role}`
       );
-      //console.log(response);
       if (response.status === 200 && response.data != null) {
         
         const data = response.data;
@@ -87,12 +85,12 @@ const LoginScreen = () => {
           navigate("/approve");
         }
       } else {
+        alert('Error');
         console.error("Login failed:", response.data.error);
-        // Handle error message or other feedback to the user
       }
     } catch (error) {
+      alert('Error');
       console.error("Request error:", error);
-      // Handle error, like showing a network error to the user
     }
   };
 

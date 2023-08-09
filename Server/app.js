@@ -4,6 +4,7 @@ const ejs = require("ejs");
 const mongoose = require("mongoose");
 const cors = require('cors');
 
+const nodemailer = require('nodemailer');
 
 const app = express();
 
@@ -32,6 +33,7 @@ const reqsSchema = new mongoose.Schema({
   timestamp: Date, // Use Date data type for storing timestamps
   NoOfApprovals: Number,
   reqid: Number,
+  attachment:Buffer
 });
 
 const Reqs = mongoose.model('Reqs', reqsSchema);
@@ -210,15 +212,40 @@ app.route("/workflows")
         }
       });
 
-    //   app.get('/reqs/:reqid', async (req, res) => {
-    //     try {
-    //     const reqid=req.params.reqid;
-    //       const reqssData = await Reqs.findOne({reqid:reqid}); // Fetch all documents from the collection
-    //       res.json(reqssData);
-    //     } catch (error) {
-    //       res.status(500).json({ error: 'Error fetching data' });
-    //     }
-    //   });
+      app.post('/reqs', async function (req, res) {
+        try {
+          const workflowId = req.query.workflowId;
+          const status = 'ReadyForReview';
+          const description = req.query.description;
+          const timestamp = new Date();
+          const NoOfApprovals = 0;
+          const reqid = req.query.reqid;
+          const attachment = req.query.attachment; // Assuming you handle the file upload properly
+          const requestorid = req.query.requestorid;
+          const email = req.query.email;
+      
+          const newReq = new Reqs({
+            workflowId: workflowId,
+            status: status,
+            timestamp: timestamp,
+            NoOfApprovals: NoOfApprovals,
+            reqid: reqid,
+            attachment: attachment,
+            requestorid: requestorid,
+            email: email,
+            description:description
+          });
+      
+          await newReq.save();
+          res.status(201).json({ message: 'Request created successfully' });
+        } catch (err) {
+          console.error(err);
+          res.status(500).json({ error: 'Internal Server Error' });
+        }
+      });
+      
+      
+            
 
       app.get('/reqs/:requesterid', async (req, res) => {
         try {
@@ -229,25 +256,69 @@ app.route("/workflows")
           res.status(500).json({ error: 'Error fetching data' });
         }
       });
+
+      const sendNotificationEmail = async (toEmail, newStatus) => {
+        const transporter = nodemailer.createTransport({
+          service: 'Gmail',
+          auth: {
+            user: 'skillyskinnyvarun@gmail.com', // Replace with your email
+            pass: '', // Replace with your password
+          },
+        });
+      
+        const mailOptions = {
+          from: 'skillyskinnyvarun@gmail.com', // Replace with your email
+          to: toEmail,
+          subject: 'Request Status Update',
+          text: `Your request status has been updated to ${newStatus}.`,
+        };
+      
+        try {
+          await transporter.sendMail(mailOptions);
+          console.log('Notification email sent successfully');
+        } catch (error) {
+          console.error('Error sending notification email:', error);
+        }
+      };
+      
+      
+      // Handle patch request for updating request status
       app.patch('/reqs/:reqid', async function (req, res) {
         try {
-            const reqId = parseInt(req.params.reqid); // Parse as MongoDB NumberInt
-            console.log('reqId:', reqId);
-            const newStatus = req.query.newStatus;
-            console.log('newStatus:', newStatus);
-            const updateResult = await Reqs.updateOne(
-                { reqid: reqId },
-                { $set: { status: newStatus } },
-                { overwrite: true }
-            );
-            console.log('updateResult:', updateResult);
-            res.json({ message: "Login updated successfully" });
+          const reqId = parseInt(req.params.reqid);
+          const newStatus = req.query.newStatus;
+      
+          const updateResult = await Reqs.updateOne(
+            { reqid: reqId },
+            { $set: { status: newStatus } },
+            { overwrite: true }
+          );
+         console.log(updateResult);
+          const reqData = await Reqs.findOne({ reqid: reqId });
+          const requestorid = reqData.requestorid;
+          const requestor = await Login.findOne({ userId: requestorid });
+          if (requestor) {
+            const requestorEmail = requestor.email;
+            await sendNotificationEmail(requestorEmail, newStatus);
+          } else {
+            console.error('Requestor not found.');
+          }
+      
+          res.json({ message: "request status updated successfully" });
         } catch (err) {
-            console.error(err);
-            res.status(500).json({ error: "Internal Server Error" });
+          console.error(err);
+          res.status(500).json({ error: "Internal Server Error" });
         }
-    });
-    
+      });
+      
+
+      
+
+          // Send notification email
+          
+      
+          
+       
     
     
          

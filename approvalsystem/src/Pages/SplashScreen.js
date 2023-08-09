@@ -4,7 +4,7 @@ import { CircularProgress } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import LoginScreen from './Login';
 
-// Keyframes for slower wave animation
+// Keyframes
 const waveAnimation = keyframes`
   0%, 100% {
     background-position: 0 0;
@@ -14,7 +14,6 @@ const waveAnimation = keyframes`
   }
 `;
 
-// Styled component for the splash screen
 const SplashContainer = styled.div`
   position: fixed;
   top: 0;
@@ -24,11 +23,11 @@ const SplashContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: red; /* Set the background color to red */
+  background-color: red; 
   background-image: linear-gradient(45deg, transparent 20%, rgba(255, 255, 255, 0.2) 20%, rgba(255, 255, 255, 0.2) 40%, transparent 40%, transparent 60%, rgba(255, 255, 255, 0.2) 60%, rgba(255, 255, 255, 0.2) 80%, transparent 80%);
-  background-size: 300% 100%; /* Slow down the wave animation */
-  animation: ${waveAnimation} 10s linear infinite; /* Slow down animation duration */
-  transition: opacity 1s; /* Add transition for opacity */
+  background-size: 300% 100%; 
+  animation: ${waveAnimation} 10s linear infinite; 
+  transition: opacity 1s; 
 `;
 
 const SplashScreen = () => {
@@ -36,7 +35,6 @@ const SplashScreen = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Simulate loading time
     setTimeout(() => {
       setLoading(false);
     }, 3000);
@@ -51,7 +49,7 @@ const SplashScreen = () => {
         <div
           style={{
             opacity: 1,
-            transition: 'opacity 5s', // Longer transition time
+            transition: 'opacity 5s', 
           }}
         >
           <LoginScreen />
