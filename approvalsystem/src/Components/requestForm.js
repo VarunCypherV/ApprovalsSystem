@@ -69,7 +69,7 @@ const RequestForm = (props) => {
   const [selectedWorkflowId, setSelectedWorkflowId] = useState('');
   const [description, setDescription] = useState('');
   const [attachments, setAttachments] = useState(null);
-
+  
   useEffect(() => {
     axios.get('http://localhost:5000/workflows')
       .then(response => {
@@ -86,16 +86,20 @@ const RequestForm = (props) => {
 
   const handleWorkflowNameChange = (event) => {
     setSelectedWorkflowName(event.target.value);
+   
   };
   const handleWorkflowIdChange = (event) => {
     setSelectedWorkflowId(event.target.value);
+
   };
   const handleDescriptionChange = (event) => {
     setDescription(event.target.value);
+   
   };
 
   const handleAttachmentsChange = (event) => {
     setAttachments(event.target.files[0]);
+    
   };
   function generateRandomNumber() {
     const min = 1;
@@ -103,7 +107,7 @@ const RequestForm = (props) => {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
   
-
+  console.log(selectedWorkflowId,selectedWorkflowName,description,attachments);
   const handleSubmit = event => {
     event.preventDefault();
 
@@ -115,12 +119,11 @@ const RequestForm = (props) => {
     formData.append('reqid', randomNo); 
     formData.append('requestorid', requestorid); 
     formData.append('email', String(requestorid)+'@gmail.com'); 
-    console.log(formData);
+    
 
     axios.post('http://localhost:5000/reqs', formData)
       .then(response => {
         console.log('Request submitted successfully:', response.data);
-   
         setSelectedWorkflowName('');
         setSelectedWorkflowId('');
         setDescription('');
