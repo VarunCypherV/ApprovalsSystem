@@ -28,7 +28,7 @@ Note: The Server runs on localhost:5000, and the website runs on localhost:3000.
     "requestorid": NumberInt(123),
     "email": "123@gmail.com"
 }
-
+```
 
 **logins:** to handle logins
 ```json
@@ -38,12 +38,10 @@ Note: The Server runs on localhost:5000, and the website runs on localhost:3000.
     "password": NumberInt(1234),
     "role": "adminstrator"
 }
-
+```
 
 **workflows:** to handle workflows
-```json
-
-{
+```json{
     "_id": ObjectId("64d3462d5f12acaab07af6c1"),
     "workflowId": NumberInt(456),
     "workflowIdName": "Support",
@@ -55,5 +53,7 @@ Note: The Server runs on localhost:5000, and the website runs on localhost:3000.
     ],
     "__v": NumberInt(0)
 }
+```
 
+Material UI is an excellent way to write CSS, making the code look cleaner and promoting code reusability. Since Next.js isn't used for routing, react-router-dom is chosen, utilizing BrowserRouter, Routes, Route, etc. Express serves as the backend server, while MongoDB with Mongoose is used for the database. Robo3T (Studio3T) is used for better database visualization. Axios simplifies HTTP requests.
 
