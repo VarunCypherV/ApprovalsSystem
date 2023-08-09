@@ -2,65 +2,79 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Container, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
 
+
 const ApproverDashboard = (props) => {
-  const [userWorkflows, setUserWorkflows] = useState([]);
-  const [filteredRequests, setFilteredRequests] = useState([]);
-  const userId = props.userId; // Assuming you're passing the user ID as a prop
-
-  useEffect(() => {
-    const fetchUserWorkflows = async () => {
-      try {
-        const response = await axios.get(`http://localhost:5000/workflows`);
-        setUserWorkflows(response.data.filter(workflow => workflow.ApproverIds.includes(userId)));
-      } catch (error) {
-        console.error('Error fetching user workflows:', error);
-      }
-    };
-
-    fetchUserWorkflows();
-  }, [userId]);
-
-  useEffect(() => {
-    const fetchFilteredRequests = async () => {
-      try {
-        const response = await axios.get(`http://localhost:5000/reqs`);
-        const filteredReqs = response.data.filter(req => {
-          const workflowIds = userWorkflows.map(workflow => workflow.workflowId);
-          return (
-            workflowIds.includes(req.workflowId) &&
-            req.status !== 'Approved' &&
-            req.status !== 'Rejected'
-          );
-        });
-        setFilteredRequests(filteredReqs);
-      } catch (error) {
-        console.error('Error fetching filtered requests:', error);
-      }
-    };
-
-    if (userWorkflows.length > 0) {
-      fetchFilteredRequests();
-    }
-  }, [userWorkflows]);
-
-
-  return (
-    <Container maxWidth="lg">
-      <Typography variant="h4">Requests for Approval</Typography>
-      <TableContainer component={Paper}>
-        <Table>
-          {/* Render the table headers here */}
-          <TableBody>
-            {filteredRequests.map((request, index) => (
-              <TableRow key={index}>
-                {/* Render the table cells with request details */}
+    const [filteredRequests, setFilteredRequests] = useState([]);
+    const userId = props.userId;
+    
+    useEffect(() => {
+      const fetchData = async () => {
+        try {
+          const workflowsResponse = await axios.get('http://localhost:5000/workflows');
+          const requestsResponse = await axios.get('http://localhost:5000/reqs');
+          const userWorkflows = workflowsResponse.data.filter(workflow => workflow.ApproverIds.includes(parseInt(userId)));
+          const filteredReqs = requestsResponse.data.filter(req => {
+            return (
+              userWorkflows.some(workflow => workflow.workflowId === req.workflowId) &&
+              req.status !== 'Approved' &&
+              req.status !== 'Rejected'
+            );
+          });
+          // Sort the requests by timestamp before setting the state
+          const sortedReqs = filteredReqs.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+          setFilteredRequests(sortedReqs);
+        } catch (error) {
+          console.error('Error fetching data:', error);
+        }
+      };
+      fetchData();
+    }, [userId]);
+  
+    return (
+      <Container maxWidth="lg">
+        <Typography variant="h4">Requests for Approval</Typography>
+        <TableContainer component={Paper}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>Requestor ID</TableCell>
+                <TableCell>Workflow ID</TableCell>
+                <TableCell>Request ID</TableCell>
+                <TableCell>Status</TableCell>
+                <TableCell>No Of Approvals</TableCell>
+                <TableCell>TimeStamp</TableCell>
+                <TableCell>Attachment</TableCell>
+                {/* Add other header cells as needed */}
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-    </Container>
-  );
-};
-
-export default ApproverDashboard;
+            </TableHead>
+            <TableBody>
+              {filteredRequests.map((request, index) => (
+                <TableRow key={index}>
+                  <TableCell>{request.requestorid}</TableCell>
+                  <TableCell>{request.workflowId}</TableCell>
+                  <TableCell>{request.reqid}</TableCell>
+                  <TableCell>{request.status}</TableCell>
+                  <TableCell>{request.NoOfApprovals}</TableCell>
+                  <TableCell>{request.timestamp}</TableCell>
+                  <TableCell>
+                    {request.attachment === null ? (
+                      'nill'
+                    ) : (
+                      <a href={request.attachment} download>
+                        Download Attachment
+                      </a>
+                    )}
+                  </TableCell>
+                  {/* Add other cells for additional details */}
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Container>
+    );
+  };
+  
+  export default ApproverDashboard;
+  
+ 
