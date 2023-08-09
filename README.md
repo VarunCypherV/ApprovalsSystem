@@ -2,7 +2,7 @@
 
 Both Client and Server are built using the following stack:
 
-**MERN + AXIOS RESTFUL API**
+##MERN + AXIOS RESTFUL API
 - Node Modules: `npm i`
 - Material UI: `npm install @mui/material @emotion/react @emotion/styled styled-components`
 - React-Router-Dom: `npm install react-router-dom`
@@ -10,12 +10,12 @@ Both Client and Server are built using the following stack:
 - Nodemailer (email notifications): `npm install nodemailer`
 
 
-###Execution
+##Execution
 -Spin up two terminals and `cd` into `approvalsystem` in one and `server` in another.
 -Run `npm start` to launch the website and `nodemon app.js` to start the server in their respective terminals.
 -Note: The Server runs on localhost:5000, and the website runs on localhost:3000.
 
-**Backend Collection Example (one of each collection):**
+##**Backend Collection Example (one of each collection):**
 
 **reqs:** to handle requests
 ```json
